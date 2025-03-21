@@ -1,0 +1,57 @@
+{
+    "cards": [
+        {
+            "word": "APPLE",
+            "color": "red",
+            "isRevealed": true,
+            "wasRecentlyRevealed": false
+        },
+        {
+            "word": "COMPUTER",
+            "color": "blue",
+            "isRevealed": false,
+            "wasRecentlyRevealed": false
+        },
+        {
+            "word": "NINJA",
+            "color": "assassin",
+            "isRevealed": false,
+            "wasRecentlyRevealed": false
+        },
+        {
+            "word": "BEACH",
+            "color": "bystander",
+            "isRevealed": true,
+            "wasRecentlyRevealed": true
+        }
+    ],
+    "chatHistory": [
+        {
+            "sender": "spymaster",
+            "message": "Fruit: 2",
+            "team": "red",
+            "cards": []
+        },
+        {
+            "sender": "operative",
+            "message": "I think APPLE is one of them!",
+            "team": "blue",
+            "cards": []
+        }
+    ],
+    "currentTeam": "red",
+    "currentRole": "spymaster",
+    "previousTeam": "blue",
+    "previousRole": "operative",
+    "remainingRed": 8,
+    "remainingBlue": 7,
+    "currentClue": {
+        "clueText": "Technology: 3",
+        "number": 3
+    },
+    "currentGuesses": [
+        "COMPUTER",
+        "PHONE"
+    ],
+    "gameWinner": null
+}
