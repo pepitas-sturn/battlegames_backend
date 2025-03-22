@@ -8,8 +8,10 @@ const getAllRooms = async (): Promise<TGameState[]> => {
 
     for (const roomId of roomIDs) {
         const idOnly = roomId.split(':')[1]
-        const data = await getSingleRoom(idOnly)
-        data && rooms.push(data)
+        if (idOnly) {
+            const data = await getSingleRoom(idOnly)
+            data && rooms.push(data)
+        }
     }
 
     return rooms ?? []
