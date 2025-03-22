@@ -5,23 +5,23 @@ const rootRouter = Router()
 // rootRouter
 rootRouter
     .get(
-        '/',
+        '/rooms',
         Controller.getAllRooms
     )
     .get(
-        '/:roomId',
+        '/rooms/:roomId',
         Controller.getSingleRoom
     )
     .post(
-        '/',
+        '/rooms/create',
         Controller.createRoom
     )
-    .put(
-        '/:roomId',
+    .patch(
+        '/rooms/:roomId',
         Controller.updateRoom
     )
     .delete(
-        '/:roomId',
+        '/rooms/:roomId',
         Controller.deleteRoom
     )
     

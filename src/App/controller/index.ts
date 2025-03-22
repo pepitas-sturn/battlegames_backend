@@ -1,9 +1,9 @@
 import catchAsync from "@/Utils/helper/catchAsync"
 import { sendResponse } from "@/Utils/helper/sendResponse"
 import { NextFunction, Request, Response } from "express"
+import { z } from "zod"
 import { Services } from "../services"
 import { Validations } from "../validations"
-import { z } from "zod"
 
 const getAllRooms = catchAsync(async (req: Request, res: Response , next: NextFunction) => {
 
@@ -49,7 +49,10 @@ const updateRoom = catchAsync(async (req: Request, res: Response , next: NextFun
         roomId: z.string().min(1)
     }).parse(req.params)
 
-    const payload = Validations.GameStatePayloadSchema.parse(req.body)
+    const payload = Validations.GameStatePayloadSchema.parse({
+        roomId,
+        ...req.body
+    })
 
     await Services.updateRoom(roomId, payload)
 

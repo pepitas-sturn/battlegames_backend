@@ -16,6 +16,11 @@ const getSingleRoom = async (roomId: string) => {
 
 //create room
 const createRoom = async (room: TGameState) => {
+
+    const roomExists = await getSingleRoom(room.roomId)
+
+    if(roomExists) throw new CustomError('Room Id already exists.',400)
+
     const newRoom = await RedisService.createRoom(room.roomId, room)
 
     if (!newRoom) throw new CustomError('Room created failed.', 400)

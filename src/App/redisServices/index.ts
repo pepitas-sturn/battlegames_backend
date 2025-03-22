@@ -1,10 +1,18 @@
-import { RedisClient } from "@/Config/redis"
-import { TGameState } from "../types"
+import { RedisClient } from "@/Config/redis";
+import { TGameState } from "../types";
 
 //get all room
 const getAllRooms = async (): Promise<TGameState[]> => {
-    const rooms = await RedisClient.get('room:*')
-    return rooms ? JSON.parse(rooms) : []
+    const roomIDs = await RedisClient.keys('room:*')
+    let rooms: TGameState[] = [];
+
+    for (const roomId of roomIDs) {
+        const idOnly = roomId.split(':')[1]
+        const data = await getSingleRoom(idOnly)
+        data && rooms.push(data)
+    }
+
+    return rooms ?? []
 }
 
 //get single room
