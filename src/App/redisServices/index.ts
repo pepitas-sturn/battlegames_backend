@@ -25,7 +25,7 @@ const getSingleRoom = async (roomId: string): Promise<TGameState | null> => {
 
 //create room
 const createRoom = async (roomId: string, room: TGameState): Promise<boolean> => {
-    const newRoom = await RedisClient.set(`room:${roomId}`, JSON.stringify(room))
+    const newRoom = await RedisClient.setex(`room:${roomId}`, 5 * 60, JSON.stringify(room))
     return newRoom === 'OK' ? true : false
 }
 
@@ -35,7 +35,7 @@ const updateRoom = async (roomId: string, room: TGameState): Promise<boolean> =>
     if (!roomExists) {
         throw new Error('Room not found')
     }
-    const updatedRoom = await RedisClient.set(`room:${roomId}`, JSON.stringify(room))
+    const updatedRoom = await RedisClient.setex(`room:${roomId}`, 5 * 60, JSON.stringify(room))
     return updatedRoom === 'OK' ? true : false
 }
 
