@@ -8,43 +8,49 @@ import "@/Config/db";
 import '@/Config/redis';
 import '@/Config/redis.events';
 import http from "http";
+import { Server } from "socket.io";
+import { z } from "zod";
+import { activeSocketServer } from "./socketServer";
+import CustomError from "./Utils/errors/customError.class";
 
 const server = http.createServer(app)
 
-//socket server
-//58265 , 6463 , 52473
-// const io = new Server(server, {
-//     connectionStateRecovery: {
-//         maxDisconnectionDuration: 10000
-//     },
-//     cors: {
-//         origin: [
-//             'http://localhost:3000',
-//         ]
-//     }
-// });
-// io.use((socket, next) => {
-//     try {
-//         const token = z.string({
-//             required_error: 'Authorization token required'
-//         }).parse(socket.handshake.auth.token)
+// socket server
+// 58265 , 6463 , 52473
+const io = new Server(server, {
+    connectionStateRecovery: {
+        maxDisconnectionDuration: 10000
+    },
+    cors: {
+        origin: [
+            'http://localhost:3000',
+        ]
+    }
+});
+io.use((socket, next) => {
+    try {
+        const apiKey = z.string({
+            required_error: 'Authorization token required'
+        }).parse(socket.handshake.auth.apiKey)
 
-//         // const { uid, role, email } = jwt.verify(token, config.jwt.refreshToken.secret as string) as CustomJwtPayload
+        if (apiKey !== config.apiKey) {
+            next(new CustomError('Invalid API key', 401))
+        }
 
-//         // socket.handshake.auth = {
-//         //     uid,
-//         //     role,
-//         //     email
-//         // }
-//         // if (!token) {
-//         //     next(new CustomError('Authorization failed. ', 401))
-//         // }
-//         next()
-//     } catch (e) {
-//         next(new CustomError((e as Error).message as string, 500))
-//     }
-// })
-// activeSocketServer(io)
+        // socket.handshake.auth = {
+        //     uid,
+        //     role,
+        //     email
+        // }
+        if (!apiKey) {
+            next(new CustomError('Authorization failed. ', 401))
+        }
+        next()
+    } catch (e) {
+        next(new CustomError((e as Error).message as string, 500))
+    }
+})
+activeSocketServer(io)
 
 const { port } = config
 

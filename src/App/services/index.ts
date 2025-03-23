@@ -1,7 +1,7 @@
 import CustomError from "@/Utils/errors/customError.class"
 import { RedisService } from "../redisServices"
+import { SocketService } from "../sockerService"
 import { TGameState } from "../types"
-
 //get all room
 const getAllRooms = async () => {
     const rooms = await RedisService.getAllRooms()
@@ -33,6 +33,8 @@ const updateRoom = async (roomId: string, room: TGameState) => {
     const updatedRoom = await RedisService.updateRoom(roomId, room)
 
     if (!updatedRoom) throw new CustomError('Room updated failed.', 400)
+
+    SocketService.updateGameState(roomId, room)
 
     return updatedRoom
 }
