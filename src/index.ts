@@ -30,21 +30,13 @@ const io = new Server(server, {
 io.use((socket, next) => {
     try {
         const apiKey = z.string({
-            required_error: 'Authorization token required'
+            required_error: 'Invalid API key'
         }).parse(socket.handshake.auth.apiKey)
 
         if (apiKey !== config.apiKey) {
             next(new CustomError('Invalid API key', 401))
         }
 
-        // socket.handshake.auth = {
-        //     uid,
-        //     role,
-        //     email
-        // }
-        if (!apiKey) {
-            next(new CustomError('Authorization failed. ', 401))
-        }
         next()
     } catch (e) {
         next(new CustomError((e as Error).message as string, 500))

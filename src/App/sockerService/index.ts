@@ -6,6 +6,13 @@ const updateGameState = (roomId: string, gameState: TGameState) => {
 }
 /* 
     in frontend:
+
+    socket.emit('joinInRoom', roomId)
+
+    socket.on('joinRoomResponse', (data: { roomId: string, message: string }) => {
+        console.log(`{roomId: ${data.roomId}, message: ${data.message}}`);
+    })
+
     socket.on('gameStateUpdated', (data: TGameState) => {
         console.log(`{gameState: ${data}}`);
     })

@@ -9,16 +9,16 @@ export const activeSocketServer = (io: Server<DefaultEventsMap, DefaultEventsMap
         socketServer = socket;
         ioServer = io;
 
-        const { roomId } = socket.handshake.query;
 
         console.log(`new user ${socket.id} joined.`);
         console.log(`{auth: ${socket.handshake.auth}}`);
         console.log(`{isConnected: ${socket.connected}}`);
         socket.connected && console.log(` user: ${socket.id} is connected.`);
 
-        if (roomId) {
-            SocketService.joinInRoom(roomId as string);
-        }
+        socket.on('joinInRoom', (roomId: string) => {
+            SocketService.joinInRoom(roomId);
+            socket.to(socket.id).emit('joinRoomResponse', { roomId, message: 'Successfully joined in room' });
+        })
 
         socket.on('message', (message: string) => {
             console.log(`{message: ${message}}`);
