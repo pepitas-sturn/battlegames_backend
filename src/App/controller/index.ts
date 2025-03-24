@@ -1,9 +1,11 @@
 import catchAsync from "@/Utils/helper/catchAsync"
 import { sendResponse } from "@/Utils/helper/sendResponse"
 import { NextFunction, Request, Response } from "express"
+import { v4 as uuidv4 } from 'uuid'
 import { z } from "zod"
 import { Services } from "../services"
 import { Validations } from "../validations"
+import CustomError from "@/Utils/errors/customError.class"
 
 const getAllRooms = catchAsync(async (req: Request, res: Response , next: NextFunction) => {
 
@@ -33,13 +35,20 @@ const getSingleRoom = catchAsync(async (req: Request, res: Response , next: Next
 
 const createRoom = catchAsync(async (req: Request, res: Response , next: NextFunction) => {
     
-    const payload = Validations.GameStatePayloadSchema.parse(req.body)
+    const payload = Validations.GameStatePayloadSchema.parse({
+        ...req.body,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    })
  
      await Services.createRoom(payload)
     
-    sendResponse.error(res,{
+    sendResponse.success(res,{
      message:'Created successfully',
-     statusCode:200
+     statusCode:200,
+     data:{
+        ...payload,
+     }
     })
  }
 )
@@ -51,7 +60,8 @@ const updateRoom = catchAsync(async (req: Request, res: Response , next: NextFun
 
     const payload = Validations.GameStatePayloadSchema.parse({
         roomId,
-        ...req.body
+        ...req.body,
+        updatedAt: new Date(),
     })
 
     await Services.updateRoom(roomId, payload)

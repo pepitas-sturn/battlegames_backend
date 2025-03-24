@@ -2,6 +2,7 @@ import CustomError from "@/Utils/errors/customError.class"
 import { RedisService } from "../redisServices"
 import { SocketService } from "../sockerService"
 import { TGameState } from "../types"
+
 //get all room
 const getAllRooms = async () => {
     const rooms = await RedisService.getAllRooms()
@@ -30,6 +31,11 @@ const createRoom = async (room: TGameState) => {
 
 //update room
 const updateRoom = async (roomId: string, room: TGameState) => {
+
+    const roomExists = await getSingleRoom(roomId)
+
+    if(!roomExists) throw new CustomError('Room not found.',404)
+
     const updatedRoom = await RedisService.updateRoom(roomId, room)
 
     if (!updatedRoom) throw new CustomError('Room updated failed.', 400)
@@ -41,6 +47,11 @@ const updateRoom = async (roomId: string, room: TGameState) => {
 
 //delete room
 const deleteRoom = async (roomId: string) => {
+
+    const roomExists = await getSingleRoom(roomId)
+
+    if(!roomExists) throw new CustomError('Room not found.',404)
+
     const deletedRoom = await RedisService.deleteRoom(roomId)
 
     if (!deletedRoom) throw new CustomError('Room deleted failed.', 400)

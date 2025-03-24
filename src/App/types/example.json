@@ -4,13 +4,13 @@
             "word": "APPLE",
             "color": "red",
             "isRevealed": true,
-            "wasRecentlyRevealed": false
+            "wasRecentlyRevealed": true
         },
         {
             "word": "COMPUTER",
             "color": "blue",
-            "isRevealed": false,
-            "wasRecentlyRevealed": false
+            "isRevealed": true,
+            "wasRecentlyRevealed": true
         },
         {
             "word": "NINJA",
@@ -53,5 +53,15 @@
         "COMPUTER",
         "PHONE"
     ],
-    "gameWinner": null
+    "gameWinner": null,
+    "participants":[
+        {
+            "name":"model 1",
+            "team":"blue"
+        },
+        {
+            "name":"model 2",
+            "team":"blue"
+        }
+    ]
 }

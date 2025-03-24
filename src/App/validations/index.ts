@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { ECardColor, ERole, ETeamColor, IGameState } from "../types";
 
 // Enum schemas
- const TeamColorSchema = z.enum(["red", "blue"]);
- const CardColorSchema = z.enum(["red", "blue", "bystander", "assassin"]);
- const RoleSchema = z.enum(["spymaster", "operative"]);
+ const TeamColorSchema = z.enum([ETeamColor.RED, ETeamColor.BLUE]);
+ const CardColorSchema = z.enum([ECardColor.RED, ECardColor.BLUE, ECardColor.BYSTANDER, ECardColor.ASSASSIN]);
+ const RoleSchema = z.enum([ERole.SPYMASTER, ERole.OPERATIVE]);
 
 // Card type schema
  const CardTypeSchema = z.object({
@@ -27,8 +28,13 @@ import { z } from "zod";
     number: z.number(),
 });
 
+const ParticipantSchema = z.object({
+    name: z.string(),
+    team: TeamColorSchema,
+});
+
 // Game state schema
- const GameStatePayloadSchema = z.object({
+ const GameStatePayloadSchema: z.ZodType<IGameState> = z.object({
     roomId: z.string(),
     cards: z.array(CardTypeSchema),
     chatHistory: z.array(ChatMessageSchema),
@@ -41,6 +47,9 @@ import { z } from "zod";
     currentClue: ClueSchema.nullable(),
     currentGuesses: z.array(z.string()).nullable(),
     gameWinner: TeamColorSchema.nullable(),
+    participants: z.array(ParticipantSchema),
+    createdAt: z.date(),
+    updatedAt: z.date(),
 });
 
  export const Validations = {
