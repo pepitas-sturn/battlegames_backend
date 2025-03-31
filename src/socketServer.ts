@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { SocketService } from "./App/sockerService";
+import { z } from "zod";
+import { Services } from "./App/services";
 export let socketServer: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> | null = null;
 export let ioServer: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any> | null = null;
 
@@ -15,9 +16,18 @@ export const activeSocketServer = (io: Server<DefaultEventsMap, DefaultEventsMap
         console.log(`{isConnected: ${socket.connected}}`);
         socket.connected && console.log(` user: ${socket.id} is connected.`);
 
-        socket.on('joinInRoom', (roomId: string) => {
-            SocketService.joinInRoom(roomId);
-            socket.to(socket.id).emit('joinRoomResponse', { roomId, message: 'Successfully joined in room' });
+        socket.on('joinInRoom', async (roomId: string) => {
+            const id = z.string().parse(roomId);
+            console.log(`{roomId: ${id}}`);
+            const roomExists = await Services.getSingleRoom(id);
+
+            if (!roomExists) {
+                io.emit('joinRoomResponse', { roomId, message: 'Room not found' });
+                return;
+            }
+            // SocketService.joinInRoom(id);
+            socket.join(id);
+            io.to(roomId).emit('joinRoomResponse', { roomId, message: 'Successfully joined in room' });
         })
 
         socket.on('message', (message: string) => {

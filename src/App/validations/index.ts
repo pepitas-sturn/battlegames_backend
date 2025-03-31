@@ -2,12 +2,12 @@ import { z } from "zod";
 import { ECardColor, ERole, ETeamColor, IGameState } from "../types";
 
 // Enum schemas
- const TeamColorSchema = z.enum([ETeamColor.RED, ETeamColor.BLUE]);
- const CardColorSchema = z.enum([ECardColor.RED, ECardColor.BLUE, ECardColor.BYSTANDER, ECardColor.ASSASSIN]);
- const RoleSchema = z.enum([ERole.SPYMASTER, ERole.OPERATIVE]);
+const TeamColorSchema = z.enum([ETeamColor.RED, ETeamColor.BLUE]);
+const CardColorSchema = z.enum([ECardColor.RED, ECardColor.BLUE, ECardColor.BYSTANDER, ECardColor.ASSASSIN]);
+const RoleSchema = z.enum([ERole.SPYMASTER, ERole.OPERATIVE]);
 
 // Card type schema
- const CardTypeSchema = z.object({
+const CardTypeSchema = z.object({
     word: z.string(),
     color: CardColorSchema.nullable(),
     isRevealed: z.boolean(),
@@ -15,7 +15,7 @@ import { ECardColor, ERole, ETeamColor, IGameState } from "../types";
 });
 
 // Chat message schema
- const ChatMessageSchema = z.object({
+const ChatMessageSchema = z.object({
     sender: RoleSchema,
     message: z.string(),
     team: TeamColorSchema,
@@ -23,7 +23,7 @@ import { ECardColor, ERole, ETeamColor, IGameState } from "../types";
 });
 
 // Clue schema
- const ClueSchema = z.object({
+const ClueSchema = z.object({
     clueText: z.string(),
     number: z.number(),
 });
@@ -34,7 +34,7 @@ const ParticipantSchema = z.object({
 });
 
 // Game state schema
- const GameStatePayloadSchema: z.ZodType<IGameState> = z.object({
+const GameStatePayloadSchema: z.ZodType<IGameState> = z.object({
     roomId: z.string(),
     cards: z.array(CardTypeSchema),
     chatHistory: z.array(ChatMessageSchema),
@@ -52,7 +52,7 @@ const ParticipantSchema = z.object({
     updatedAt: z.date(),
 });
 
- export const Validations = {
+export const Validations = {
     TeamColorSchema,
     CardColorSchema,
     RoleSchema,
@@ -60,4 +60,4 @@ const ParticipantSchema = z.object({
     ChatMessageSchema,
     ClueSchema,
     GameStatePayloadSchema
- }
+}

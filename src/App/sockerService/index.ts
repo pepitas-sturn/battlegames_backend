@@ -1,5 +1,6 @@
 import { ioServer, socketServer } from "@/socketServer"
 import { TGameState } from "../types"
+import { Services } from "../services"
 
 const updateGameState = (roomId: string, gameState: TGameState) => {
     ioServer?.to(roomId).emit('gameStateUpdated', { gameState })
@@ -23,7 +24,12 @@ const joinInRoom = (roomId: string) => {
     socketServer?.join(roomId)
 }
 
+const updateRoomList = async () => {
+    ioServer?.emit('updateRoomList', await Services.getAllRooms())
+}
+
 export const SocketService = {
     joinInRoom,
-    updateGameState
+    updateGameState,
+    updateRoomList,
 }
