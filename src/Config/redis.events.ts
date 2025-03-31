@@ -1,3 +1,4 @@
+import { SocketService } from "@/App/sockerService";
 import config from "@/Config/index";
 import { Redis } from "ioredis";
 
@@ -14,8 +15,9 @@ RedisEventClient.subscribe('__keyevent@0__:expired');
 RedisEventClient.on('message', async (channel: string, message: string) => {
     console.log('message', { message, channel });
     if (channel === chanel_name) {
-        const id = message.split(':')
-        if (id[0] === 'session') {
+        const [codeName, id] = message.split(':')
+        if (codeName === 'room') {
+            SocketService.updateRoomList()
         }
     }
 })
