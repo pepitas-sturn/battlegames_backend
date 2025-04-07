@@ -66,7 +66,7 @@ const updateRoom = catchAsync(async (req: Request, res: Response, next: NextFunc
     const payload = Validations.GameStatePayloadSchema.parse({
         roomId,
         ...req.body,
-        createdAt: room.createdAt,
+        createdAt: new Date(room.createdAt),
         updatedAt: new Date(),
     })
 
