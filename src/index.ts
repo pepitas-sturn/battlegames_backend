@@ -24,7 +24,7 @@ const io = new Server(server, {
     cors: {
         origin: [
             'http://localhost:3000',
-            "https://battle-game-llm.vercel.app"
+            "battle-game-llm.vercel.app"
         ]
     }
 });

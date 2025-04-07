@@ -9,7 +9,7 @@ import express, { Application } from 'express';
 import configRoutes from './Routes/config';
 
 const app: Application = express()
-app.use(express.json({ }))
+app.use(express.json({}))
 app.use(cors())
 
 app.use(
