@@ -25,7 +25,6 @@ export const activeSocketServer = (io: Server<DefaultEventsMap, DefaultEventsMap
                 io.emit('joinRoomResponse', { roomId, message: 'Room not found' });
                 return;
             }
-            // SocketService.joinInRoom(id);
             socket.join(id);
             io.to(roomId).emit('joinRoomResponse', { roomId, message: 'Successfully joined in room' });
         })

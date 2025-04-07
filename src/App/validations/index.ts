@@ -19,7 +19,6 @@ const ChatMessageSchema = z.object({
     sender: RoleSchema,
     message: z.string(),
     team: TeamColorSchema,
-    cards: z.array(CardTypeSchema),
 });
 
 // Clue schema

@@ -34,7 +34,6 @@ export interface IChatMessage {
     sender: ERole;
     message: string;
     team: ETeamColor;
-    cards: ICardType[];
 }
 
 // Clue interface

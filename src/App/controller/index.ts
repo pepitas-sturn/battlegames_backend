@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express"
 import { z } from "zod"
 import { Services } from "../services"
 import { Validations } from "../validations"
+import CustomError from "@/Utils/errors/customError.class"
 
 const getAllRooms = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
@@ -56,10 +57,16 @@ const updateRoom = catchAsync(async (req: Request, res: Response, next: NextFunc
         roomId: z.string().min(1)
     }).parse(req.params)
 
+    const room = await Services.getSingleRoom(roomId)
+
+    if (!room) {
+        throw new CustomError('Room not found', 404)
+    }
+
     const payload = Validations.GameStatePayloadSchema.parse({
         roomId,
         ...req.body,
-        createdAt: req.body.createdAt ? new Date(req.body.createdAt) : null,
+        createdAt: room.createdAt,
         updatedAt: new Date(),
     })
 
