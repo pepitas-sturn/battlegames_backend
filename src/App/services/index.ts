@@ -59,6 +59,8 @@ const deleteRoom = async (roomId: string) => {
 
     if (!deletedRoom) throw new CustomError('Room deleted failed.', 400)
 
+    SocketService.updateRoomList()
+
     return deletedRoom
 }
 
