@@ -44,6 +44,7 @@ const updateRoom = async (roomId: string, room: TGameState) => {
     if (!updatedRoom) throw new CustomError('Room updated failed.', 400)
 
     SocketService.updateGameState(roomId, room)
+    SocketService.updateRoomList()
 
     return updatedRoom
 }
