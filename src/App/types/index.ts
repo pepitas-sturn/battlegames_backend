@@ -48,22 +48,22 @@ export type TParticipant = {
     team: ETeamColor;
 }
 // Game state interface
-export interface IGameState {
-    roomId: string;
-    cards: ICardType[];
-    chatHistory: IChatMessage[];
-    currentTeam: ETeamColor;
-    currentRole: ERole;
-    previousTeam: ETeamColor | null;
-    previousRole: ERole | null;
-    remainingRed: number;
-    remainingBlue: number;
-    currentClue: IClue | null;
-    currentGuesses: string[] | null;
-    participants: TParticipant[];
-    createdAt: Date;
-    updatedAt: Date;
-}
+// export interface IGameState {
+//     roomId: string;
+//     cards: ICardType[];
+//     chatHistory: IChatMessage[];
+//     currentTeam: ETeamColor;
+//     currentRole: ERole;
+//     previousTeam: ETeamColor | null;
+//     previousRole: ERole | null;
+//     remainingRed: number;
+//     remainingBlue: number;
+//     currentClue: IClue | null;
+//     currentGuesses: string[] | null;
+//     participants: TParticipant[];
+//     createdAt: Date;
+//     updatedAt: Date;
+// }
 
 // You can infer the types from the schema if needed
 export type TGameState = z.infer<typeof Validations.GameStatePayloadSchema>;

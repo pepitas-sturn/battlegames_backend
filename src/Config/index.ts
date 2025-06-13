@@ -13,5 +13,6 @@ export default {
         port: process.env.REDIS_PORT,
         password: process.env.REDIS_PASSWORD,
     },
-    apiKey: process.env.API_KEY
+    apiKey: process.env.API_KEY,
+    mongo_uri: process.env.MONGO_URI,
 }

@@ -9,6 +9,10 @@ rootRouter
         Controller.getAllRooms
     )
     .get(
+        '/rooms/history',
+        Controller.getHistory
+    )
+    .get(
         '/rooms/:roomId',
         Controller.getSingleRoom
     )
@@ -24,5 +28,5 @@ rootRouter
         '/rooms/:roomId',
         Controller.deleteRoom
     )
-    
+
 export default rootRouter
