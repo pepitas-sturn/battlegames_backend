@@ -21,11 +21,11 @@ const getAllRooms = catchAsync(async (req: Request, res: Response, next: NextFun
 
 const getSingleRoom = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const { roomId } = z.object({
-        roomId: z.string().min(1)
+    const { id } = z.object({
+        id: z.string().min(1)
     }).parse(req.params)
 
-    const data = await Services.getSingleRoom(roomId)
+    const data = await Services.getSingleRoom(id)
 
     sendResponse.success(res, {
         message: 'Room fetched successfully',
@@ -53,11 +53,11 @@ const createRoom = catchAsync(async (req: Request, res: Response, next: NextFunc
 )
 
 const updateRoom = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomId } = z.object({
-        roomId: z.string().min(1)
+    const { id } = z.object({
+        id: z.string().min(1)
     }).parse(req.params)
 
-    const room = await Services.getSingleRoom(roomId)
+    const room = await Services.getSingleRoom(id)
 
 
     if (!room) {
@@ -65,13 +65,13 @@ const updateRoom = catchAsync(async (req: Request, res: Response, next: NextFunc
     }
 
     const payload = Validations.GameStatePayloadSchema.parse({
-        roomId,
+        id,
         ...req.body,
         createdAt: new Date(room.createdAt),
         updatedAt: new Date(),
     })
 
-    await Services.updateRoom(roomId, payload)
+    await Services.updateRoom(id, payload)
 
     sendResponse.success(res, {
         message: 'Room updated successfully',
@@ -80,11 +80,11 @@ const updateRoom = catchAsync(async (req: Request, res: Response, next: NextFunc
 })
 
 const deleteRoom = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomId } = z.object({
-        roomId: z.string().min(1)
+    const { id } = z.object({
+        id: z.string().min(1)
     }).parse(req.params)
 
-    await Services.deleteRoom(roomId)
+    await Services.deleteRoom(id)
 
     sendResponse.success(res, {
         message: 'Room deleted successfully',

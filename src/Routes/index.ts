@@ -13,7 +13,7 @@ rootRouter
         Controller.getHistory
     )
     .get(
-        '/rooms/:roomId',
+        '/rooms/:id',
         Controller.getSingleRoom
     )
     .post(
@@ -21,11 +21,11 @@ rootRouter
         Controller.createRoom
     )
     .patch(
-        '/rooms/:roomId',
+        '/rooms/:id',
         Controller.updateRoom
     )
     .delete(
-        '/rooms/:roomId',
+        '/rooms/:id',
         Controller.deleteRoom
     )
 

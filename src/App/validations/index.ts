@@ -35,7 +35,7 @@ const ParticipantSchema = z.object({
 
 // Game state schema
 const GameStatePayloadSchema = z.object({
-    roomId: z.string().optional(),
+    _id: z.string().optional(),
     validatorKey: z.string(), //new
     cards: z.array(CardTypeSchema),
     chatHistory: z.array(ChatMessageSchema),

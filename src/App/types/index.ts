@@ -49,7 +49,7 @@ export type TParticipant = {
 }
 // Game state interface
 // export interface IGameState {
-//     roomId: string;
+//     id: string;
 //     cards: ICardType[];
 //     chatHistory: IChatMessage[];
 //     currentTeam: ETeamColor;

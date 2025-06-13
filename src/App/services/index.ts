@@ -13,8 +13,8 @@ const getAllRooms = async () => {
 }
 
 //get single room
-const getSingleRoom = async (roomId: string) => {
-    const room = await RedisService.getSingleRoom(roomId)
+const getSingleRoom = async (id: string) => {
+    const room = await RedisService.getSingleRoom(id)
     return room
 }
 
@@ -54,13 +54,13 @@ const createRoom = async (room: TGameState) => {
     }
     const data = await GameStateModel.create(createPayload)
 
-    const roomId = data._id.toString() //the db id is the room id
+    const id = data._id.toString() //the db id is the room id
 
-    // const roomExists = await getSingleRoom(roomId)
+    // const roomExists = await getSingleRoom(id)
 
     // if (roomExists) throw new CustomError('Room Id already exists.', 400)
 
-    const newRoom = await RedisService.createRoom(roomId, { ...room, roomId })
+    const newRoom = await RedisService.createRoom(id, { ...room, _id: id })
 
     if (!newRoom) throw new CustomError('Room created failed.', 400)
 
@@ -68,55 +68,55 @@ const createRoom = async (room: TGameState) => {
 
     return {
         ...room,
-        roomId,
+        id,
     }
 }
 
 //update room
-const updateRoom = async (roomId: string, room: TGameState) => {
+const updateRoom = async (id: string, room: TGameState) => {
     //db logic
-    const gameState = await GameStateModel.findOne({ _id: roomId })
+    const gameState = await GameStateModel.findOne({ _id: id })
 
     if (!gameState) throw new CustomError('Room not found.', 404)
 
-    // const roomId = gameState._id.toString()
+    // const id = gameState._id.toString()
 
     if (room.gameWinner) {
         const updatePayload = {
             gameWinner: room.gameWinner,
         }
-        await GameStateModel.updateOne({ _id: roomId }, { $set: updatePayload })
+        await GameStateModel.updateOne({ _id: id }, { $set: updatePayload })
     }
 
-    // const roomExists = await getSingleRoom(roomId)
+    // const roomExists = await getSingleRoom(id)
 
     // if (!roomExists) throw new CustomError('Room not found.', 404)
 
-    const updatedRoom = await RedisService.updateRoom(roomId, room)
+    const updatedRoom = await RedisService.updateRoom(id, room)
 
     if (!updatedRoom) throw new CustomError('Room updated failed.', 400)
 
-    SocketService.updateGameState(roomId, room)
+    SocketService.updateGameState(id, room)
     SocketService.updateRoomList()
 
     return updatedRoom
 }
 
 //delete room
-const deleteRoom = async (roomId: string) => {
-    const gameState = await GameStateModel.findOne({ _id: roomId })
+const deleteRoom = async (id: string) => {
+    const gameState = await GameStateModel.findOne({ _id: id })
 
     if (!gameState) throw new CustomError('Room not found.', 404)
 
-    await GameStateModel.deleteOne({ _id: roomId })
+    await GameStateModel.deleteOne({ _id: id })
 
-    // const roomId = gameState._id.toString()
+    // const id = gameState._id.toString()
 
-    // const roomExists = await getSingleRoom(roomId)
+    // const roomExists = await getSingleRoom(id)
 
     // if (!roomExists) throw new CustomError('Room not found.', 404)
 
-    const deletedRoom = await RedisService.deleteRoom(roomId)
+    const deletedRoom = await RedisService.deleteRoom(id)
 
     if (!deletedRoom) throw new CustomError('Room deleted failed.', 400)
 
