@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ECardColor, ERole, ETeamColor, IGameState } from "../types";
+import { ECardColor, ERole, ETeamColor } from "../types";
 
 // Enum schemas
 const TeamColorSchema = z.enum([ETeamColor.RED, ETeamColor.BLUE]);
@@ -29,12 +29,14 @@ const ClueSchema = z.object({
 
 const ParticipantSchema = z.object({
     name: z.string(),
+    hotKey: z.string(),  //new
     team: TeamColorSchema,
 });
 
 // Game state schema
-const GameStatePayloadSchema: z.ZodType<IGameState> = z.object({
-    roomId: z.string(),
+const GameStatePayloadSchema = z.object({
+    _id: z.string().optional(),
+    validatorKey: z.string(), //new
     cards: z.array(CardTypeSchema),
     chatHistory: z.array(ChatMessageSchema),
     currentTeam: TeamColorSchema,

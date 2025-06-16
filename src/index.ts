@@ -4,7 +4,7 @@
 
 import app from "@/app";
 import config from "@/Config";
-import "@/Config/db";
+import connectDB from "@/Config/db";
 import '@/Config/redis';
 import '@/Config/redis.events';
 import http from "http";
@@ -50,6 +50,7 @@ const { port } = config
 
 const main = async () => {
     try {
+        await connectDB()
         server.listen(port, () => {
             console.log(`Server is listening on ${port}. Url: http://localhost:${port}`);
         })

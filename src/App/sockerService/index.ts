@@ -2,16 +2,16 @@ import { ioServer, socketServer } from "@/socketServer"
 import { TGameState } from "../types"
 import { Services } from "../services"
 
-const updateGameState = (roomId: string, gameState: TGameState) => {
-    ioServer?.to(roomId).emit('gameStateUpdated', { gameState })
+const updateGameState = (id: string, gameState: TGameState) => {
+    ioServer?.to(id).emit('gameStateUpdated', { gameState })
 }
 /* 
     in frontend:
 
-    socket.emit('joinInRoom', roomId)
+    socket.emit('joinInRoom', id)
 
-    socket.on('joinRoomResponse', (data: { roomId: string, message: string }) => {
-        console.log(`{roomId: ${data.roomId}, message: ${data.message}}`);
+    socket.on('joinRoomResponse', (data: { id: string, message: string }) => {
+        console.log(`{id: ${data.id}, message: ${data.message}}`);
     })
 
     socket.on('gameStateUpdated', (data: TGameState) => {
@@ -20,8 +20,8 @@ const updateGameState = (roomId: string, gameState: TGameState) => {
 */
 
 //join in room
-const joinInRoom = (roomId: string) => {
-    socketServer?.join(roomId)
+const joinInRoom = (id: string) => {
+    socketServer?.join(id)
 }
 
 const updateRoomList = async () => {

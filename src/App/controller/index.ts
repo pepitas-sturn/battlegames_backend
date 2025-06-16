@@ -1,10 +1,12 @@
+import CustomError from "@/Utils/errors/customError.class"
 import catchAsync from "@/Utils/helper/catchAsync"
+import { queryOptimization } from "@/Utils/helper/queryOptimize"
 import { sendResponse } from "@/Utils/helper/sendResponse"
 import { NextFunction, Request, Response } from "express"
 import { z } from "zod"
 import { Services } from "../services"
+import { TGameState } from "../types"
 import { Validations } from "../validations"
-import CustomError from "@/Utils/errors/customError.class"
 
 const getAllRooms = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
@@ -19,11 +21,11 @@ const getAllRooms = catchAsync(async (req: Request, res: Response, next: NextFun
 
 const getSingleRoom = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const { roomId } = z.object({
-        roomId: z.string().min(1)
+    const { id } = z.object({
+        id: z.string().min(1)
     }).parse(req.params)
 
-    const data = await Services.getSingleRoom(roomId)
+    const data = await Services.getSingleRoom(id)
 
     sendResponse.success(res, {
         message: 'Room fetched successfully',
@@ -40,37 +42,36 @@ const createRoom = catchAsync(async (req: Request, res: Response, next: NextFunc
         updatedAt: new Date(),
     })
 
-    await Services.createRoom(payload)
+    const data = await Services.createRoom(payload)
 
     sendResponse.success(res, {
         message: 'Created successfully',
         statusCode: 200,
-        data: {
-            ...payload,
-        }
+        data
     })
 }
 )
 
 const updateRoom = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomId } = z.object({
-        roomId: z.string().min(1)
+    const { id } = z.object({
+        id: z.string().min(1)
     }).parse(req.params)
 
-    const room = await Services.getSingleRoom(roomId)
+    const room = await Services.getSingleRoom(id)
+
 
     if (!room) {
         throw new CustomError('Room not found', 404)
     }
 
     const payload = Validations.GameStatePayloadSchema.parse({
-        roomId,
+        id,
         ...req.body,
         createdAt: new Date(room.createdAt),
         updatedAt: new Date(),
     })
 
-    await Services.updateRoom(roomId, payload)
+    await Services.updateRoom(id, payload)
 
     sendResponse.success(res, {
         message: 'Room updated successfully',
@@ -79,15 +80,27 @@ const updateRoom = catchAsync(async (req: Request, res: Response, next: NextFunc
 })
 
 const deleteRoom = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const { roomId } = z.object({
-        roomId: z.string().min(1)
+    const { id } = z.object({
+        id: z.string().min(1)
     }).parse(req.params)
 
-    await Services.deleteRoom(roomId)
+    await Services.deleteRoom(id)
 
     sendResponse.success(res, {
         message: 'Room deleted successfully',
         statusCode: 200
+    })
+})
+
+const getHistory = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const payload = queryOptimization<TGameState>(req, [])
+
+    const data = await Services.getHistory(payload)
+
+    sendResponse.success(res, {
+        message: 'History fetched successfully',
+        statusCode: 200,
+        data
     })
 })
 
@@ -96,5 +109,6 @@ export const Controller = {
     getSingleRoom,
     createRoom,
     updateRoom,
-    deleteRoom
+    deleteRoom,
+    getHistory
 }
