@@ -43,9 +43,13 @@ const getHistory = async (payload: IQueryItems<TGameState>) => {
 //create room
 const createRoom = async (room: TGameState) => {
 
-    const existingRoom = await GameStateModel.findOne({ validatorKey: room.validatorKey })
+    // const existingRoom = await GameStateModel.findOne({ validatorKey: room.validatorKey })
 
-    if (existingRoom) throw new CustomError('Validator key already exists.', 400)
+    // if (existingRoom) throw new CustomError('Validator key already exists.', 400)
+
+    const existingRoom = await RedisService.getSingleRoomByValidatorKey(room.validatorKey)
+
+    if (existingRoom) throw new CustomError('Validator key is using by another room.', 400)
 
     const createPayload = {
         validatorKey: room.validatorKey,

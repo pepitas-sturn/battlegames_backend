@@ -23,6 +23,13 @@ const getSingleRoom = async (id: string): Promise<TGameState | null> => {
     return room ? JSON.parse(room) : null
 }
 
+//get single room by validator key
+const getSingleRoomByValidatorKey = async (validatorKey: string): Promise<TGameState | null> => {
+    const rooms = await getAllRooms()
+    const roomData = rooms.find((room) => room.validatorKey === validatorKey)
+    return roomData ? roomData : null
+}
+
 //create room
 const createRoom = async (id: string, room: TGameState): Promise<boolean> => {
     const newRoom = await RedisClient.setex(`room:${id}`, 5 * 60, JSON.stringify(room))
@@ -55,4 +62,5 @@ export const RedisService = {
     createRoom,
     updateRoom,
     deleteRoom,
+    getSingleRoomByValidatorKey,
 }

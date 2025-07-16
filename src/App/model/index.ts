@@ -25,7 +25,6 @@ const dataSchema = new Schema({
     validatorKey: {
         type: String,
         required: true,
-        unique: true,
     },
     participants: {
         type: [participantSchema],
