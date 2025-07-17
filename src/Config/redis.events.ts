@@ -1,4 +1,4 @@
-import { SocketService } from "@/App/sockerService";
+import { SocketService } from "@/App/main/sockerService";
 import config from "@/Config/index";
 import { Redis } from "ioredis";
 
