@@ -8,6 +8,7 @@ import {
     TSortOptions
 } from "@/Utils/types/query.type";
 import { Request } from "express";
+import { Types } from "mongoose";
 
 export const calculatePagination = (data: Partial<TPaginationOptions>): TPaginationOptions => {
     const page = Number(data.page || 1)
@@ -43,5 +44,72 @@ export const queryOptimization = <M>(req: Request, fields: (keyof M)[], extraFie
         paginationFields: pagination,
         sortFields: sort,
         filterFields: filter,
+    }
+}
+
+export const MongoQueryHelper = (fieldType: string, fieldName: string, searchValue: string) => {
+    if (fieldType === "Number") {
+        //number
+        if (!isNaN(Number(searchValue))) {
+            switch (fieldName) {
+                case "min_price":
+                    return {
+                        price: {
+                            $gte: Number(searchValue)
+                        }
+                    }
+                case "max_price":
+                    return {
+                        price: {
+                            $lte: Number(searchValue)
+                        }
+                    }
+                default:
+                    return {
+                        [fieldName]: Number(searchValue)
+                    }
+            }
+
+        } else {
+            return {
+                [fieldName]: {
+                    $exists: false,
+                }
+            }
+        }
+    } else if (fieldType === 'ObjectId') {
+        /*
+        *  validate if you need to query by objectId=> Types.ObjectId.isValid(search)
+        * */
+        const validate = Types.ObjectId.isValid(searchValue)
+        return {
+            [fieldName]: validate ? searchValue : {
+                $exists: false,
+            }
+        }
+    } else if (fieldType === 'Date') {
+        /*
+        *  validate if you need to query by Date
+        * */
+        return {
+            [fieldName]: {
+                $exists: false,
+            }
+        }
+    } else if (fieldType === 'Boolean') {
+        /*
+        *  validate if you need to query by Date
+        * */
+        return {
+            [fieldName]: Boolean(searchValue)
+        }
+    } else {
+        //default for string search
+        return {
+            [fieldName]: {
+                $regex: searchValue.toString(),
+                $options: "i"
+            }
+        }
     }
 }

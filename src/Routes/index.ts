@@ -1,32 +1,22 @@
+import RoomRouter from "@/App/main/routes";
+import AuthRoutes from "@/App/sso/Auth/auth.routes";
+import AccountRouter from "@/App/sso/Account/account.routes";
 import { Router } from "express";
-import { Controller } from "../App/main/controller";
 
 const rootRouter = Router()
-// rootRouter
+
 rootRouter
-    .get(
+    .use(
         '/rooms',
-        Controller.getAllRooms
+        RoomRouter
     )
-    .get(
-        '/rooms/history',
-        Controller.getHistory
+    .use(
+        '/auth',
+        AuthRoutes
     )
-    .get(
-        '/rooms/:id',
-        Controller.getSingleRoom
-    )
-    .post(
-        '/rooms/create',
-        Controller.createRoom
-    )
-    .patch(
-        '/rooms/:id',
-        Controller.updateRoom
-    )
-    .delete(
-        '/rooms/:id',
-        Controller.deleteRoom
+    .use(
+        '/accounts',
+        AccountRouter
     )
 
 export default rootRouter

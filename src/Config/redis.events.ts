@@ -4,7 +4,7 @@ import { Redis } from "ioredis";
 
 const RedisEventClient = new Redis({
     host: config.redis.host,
-    port: parseInt(config.redis.port as string) || 6379,
+    port: config.redis.port || 6379,
     password: config.redis.password
 })
 
