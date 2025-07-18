@@ -10,6 +10,7 @@ export const activeSocketServer = (io: Server<DefaultEventsMap, DefaultEventsMap
         socketServer = socket;
         ioServer = io;
 
+        console.log('socket connected', socket.id)
 
         socket.on('joinInRoom', async (id: string) => {
             const _id = z.string().parse(id);

@@ -36,7 +36,7 @@ io.use((socket, next) => {
             required_error: 'Invalid API key'
         }).parse(socket.handshake.auth.apiKey)
 
-        if (apiKey !== config.apiKey) {
+        if (apiKey !== config.socket_api_key) {
             next(new CustomError('Invalid API key', 401))
         }
 

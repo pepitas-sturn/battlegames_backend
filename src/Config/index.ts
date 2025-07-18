@@ -39,7 +39,8 @@ const envConfig = z.object({
         client_id: z.string(),
         client_secret: z.string()
     }),
-    backend_base_url: z.string()
+    backend_base_url: z.string(),
+    socket_api_key: z.string()
 }).parse({
     app_name: process.env.APP_NAME,
     port: process.env.PORT || 9000,
@@ -73,7 +74,8 @@ const envConfig = z.object({
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET
     },
-    backend_base_url: process.env.BACKEND_BASE_URL
+    backend_base_url: process.env.BACKEND_BASE_URL,
+    socket_api_key: process.env.SOCKET_API_KEY
 })
 
 export default envConfig
