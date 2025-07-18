@@ -26,7 +26,8 @@ const io = new Server(server, {
             'http://localhost:3000',
             'https://game.battle-llm.io',
             'https://shiftlayer.ai',
-            'https://battle-game-llm-c7a9.vercel.app'
+            'https://battle-game-llm-c7a9.vercel.app',
+            'https://play.shiftlayer.ai'
         ]
     }
 });
