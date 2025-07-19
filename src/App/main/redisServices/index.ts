@@ -32,6 +32,7 @@ const getSingleRoomByValidatorKey = async (validatorKey: string): Promise<TGameS
 
 //create room
 const createRoom = async (id: string, room: TGameState): Promise<boolean> => {
+    console.log('before create in redis', { id, room })
     const newRoom = await RedisClient.setex(`room:${id}`, 5 * 60, JSON.stringify(room))
     return newRoom === 'OK' ? true : false
 }

@@ -58,7 +58,11 @@ const createRoom = async (room: TGameState) => {
     }
     const data = await GameStateModel.create(createPayload)
 
+    console.log('after create', { data })
+
     const id = data._id.toString() //the db id is the room id
+
+    console.log('after id', { id })
 
     // const roomExists = await getSingleRoom(id)
 
